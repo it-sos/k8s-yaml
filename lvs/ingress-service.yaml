@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-wildcard-host
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    #nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: "itsos.ltd"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: blog-frontend
+                port:
+                  number: 80
+    - host: "cdn.itsos.ltd"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: blog-frontend
+                port:
+                  number: 80
+    - host: "api.itsos.ltd"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: blog-backend
+                port:
+                  number: 8090

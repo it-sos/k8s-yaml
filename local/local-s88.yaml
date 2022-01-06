@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: local-service
+   labels:
+     name: local-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s88
+  namespace: local-service
+spec:
+  clusterIP: None
+  ports:
+    - protocol: TCP
+      name: mysql
+      port: 3306
+      targetPort: 3306
+    - protocol: TCP
+      name: es
+      port: 9200
+      targetPort: 9200
+    - protocol: TCP
+      name: minio
+      port: 9000
+      targetPort: 9000
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  namespace: local-service
+  name: s88
+subsets:
+  - addresses:
+      - ip: 192.168.1.88
+    ports:
+      - port: 3306
+        name: mysql
+      - port: 9200
+        name: es
+      - port: 9000
+        name: minio
