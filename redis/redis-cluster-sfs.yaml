@@ -295,9 +295,10 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
       - name: redis
-        image: docker.io/library/redis:6.2.6
+        #image: docker.io/library/redis:6.2.6
+        image: docker.io/library/redislabs/redisearch:latest
         command:
-          ["/bin/sh", "/etc/redis/update-node.sh", "redis-server", "/etc/redis/redis.conf"]
+          ["/bin/sh", "/etc/redis/update-node.sh", "redis-server", "/etc/redis/redis.conf", "--loadmodule", "/usr/lib/redis/modules/redisearch.so", "--loadmodule", "/usr/lib/redis/modules/rejson.so"]
         #  - "redis-server"
         #args:
         #  - "/etc/redis/redis.conf"
