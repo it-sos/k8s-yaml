@@ -25,6 +25,30 @@ spec:
       name: minio
       port: 9000
       targetPort: 9000
+    - protocol: TCP
+      name: redis1
+      port: 7001
+      targetPort: 7001
+    - protocol: TCP
+      name: redis2
+      port: 7002
+      targetPort: 7002
+    - protocol: TCP
+      name: redis3
+      port: 7003
+      targetPort: 7003
+    - protocol: TCP
+      name: redis4
+      port: 7004
+      targetPort: 7004
+    - protocol: TCP
+      name: redis5
+      port: 7005
+      targetPort: 7005
+    - protocol: TCP
+      name: redis6
+      port: 7006
+      targetPort: 7006
 ---
 apiVersion: v1
 kind: Endpoints
@@ -41,3 +65,15 @@ subsets:
         name: es
       - port: 9000
         name: minio
+      - port: 7001
+        name: redis1
+      - port: 7002
+        name: redis1
+      - port: 7003
+        name: redis1
+      - port: 7004
+        name: redis1
+      - port: 7005
+        name: redis1
+      - port: 7006
+        name: redis6

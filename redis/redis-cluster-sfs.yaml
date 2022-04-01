@@ -55,6 +55,29 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: redis-local-feiyu3
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: redis-local-storage
+  local:
+    path: /var/local/k8s/redis/data3
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - feiyu-pc
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: redis-local-dd1
 spec:
   capacity:
@@ -101,99 +124,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: redis-local-xin1
-spec:
-  capacity:
-    storage: 3Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: redis-local-storage
-  local:
-    path: /var/local/k8s/redis/data1
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - xin-os
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: redis-local-xin2
-spec:
-  capacity:
-    storage: 3Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: redis-local-storage
-  local:
-    path: /var/local/k8s/redis/data2
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - xin-os
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: redis-local-itsos1
-spec:
-  capacity:
-    storage: 3Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: redis-local-storage
-  local:
-    path: /var/local/k8s/redis/data1
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - itsos-pc
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: redis-local-itsos2
-spec:
-  capacity:
-    storage: 3Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: redis-local-storage
-  local:
-    path: /var/local/k8s/redis/data2
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - itsos-pc
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: redis-local-itsos3
+  name: redis-local-dd3
 spec:
   capacity:
     storage: 3Gi
@@ -211,8 +142,123 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - itsos-pc
+          - dd-pc
 ---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: redis-local-xin1
+#spec:
+#  capacity:
+#    storage: 3Gi
+#  volumeMode: Filesystem
+#  accessModes:
+#  - ReadWriteOnce
+#  persistentVolumeReclaimPolicy: Retain
+#  storageClassName: redis-local-storage
+#  local:
+#    path: /var/local/k8s/redis/data1
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: kubernetes.io/hostname
+#          operator: In
+#          values:
+#          - xin-os
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: redis-local-xin2
+#spec:
+#  capacity:
+#    storage: 3Gi
+#  volumeMode: Filesystem
+#  accessModes:
+#  - ReadWriteOnce
+#  persistentVolumeReclaimPolicy: Retain
+#  storageClassName: redis-local-storage
+#  local:
+#    path: /var/local/k8s/redis/data2
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: kubernetes.io/hostname
+#          operator: In
+#          values:
+#          - xin-os
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: redis-local-itsos1
+#spec:
+#  capacity:
+#    storage: 3Gi
+#  volumeMode: Filesystem
+#  accessModes:
+#  - ReadWriteOnce
+#  persistentVolumeReclaimPolicy: Retain
+#  storageClassName: redis-local-storage
+#  local:
+#    path: /var/local/k8s/redis/data1
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: kubernetes.io/hostname
+#          operator: In
+#          values:
+#          - itsos-pc
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: redis-local-itsos2
+#spec:
+#  capacity:
+#    storage: 3Gi
+#  volumeMode: Filesystem
+#  accessModes:
+#  - ReadWriteOnce
+#  persistentVolumeReclaimPolicy: Retain
+#  storageClassName: redis-local-storage
+#  local:
+#    path: /var/local/k8s/redis/data2
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: kubernetes.io/hostname
+#          operator: In
+#          values:
+#          - itsos-pc
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: redis-local-itsos3
+#spec:
+#  capacity:
+#    storage: 3Gi
+#  volumeMode: Filesystem
+#  accessModes:
+#  - ReadWriteOnce
+#  persistentVolumeReclaimPolicy: Retain
+#  storageClassName: redis-local-storage
+#  local:
+#    path: /var/local/k8s/redis/data3
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: kubernetes.io/hostname
+#          operator: In
+#          values:
+#          - itsos-pc
+#---
 # 创建命名空间
 apiVersion: v1
 kind: Namespace
@@ -273,7 +319,7 @@ spec:
       app: redis 
       appCluster: redis-cluster
   serviceName: rdb # 指定无头服务的名字
-  replicas: 9 # by default is 1
+  replicas: 6 # by default is 1
   template:
     metadata:
       labels: # has to match .spec.selector.matchLabels
@@ -296,7 +342,7 @@ spec:
       containers:
       - name: redis
         #image: docker.io/library/redis:6.2.6
-        image: docker.io/library/redislabs/redisearch:latest
+        image: docker.io/redislabs/redisearch:latest
         command:
           ["/bin/sh", "/etc/redis/update-node.sh", "redis-server", "/etc/redis/redis.conf", "--loadmodule", "/usr/lib/redis/modules/redisearch.so", "--loadmodule", "/usr/lib/redis/modules/rejson.so"]
         #  - "redis-server"
@@ -323,10 +369,10 @@ spec:
         resources:
           requests:                         # 每个pod请求的资源
             cpu: 500m
-            memory: 1Gi
+            memory: 500Mi
           limits:                           # 资源限制
             cpu: 1000m
-            memory: 2Gi
+            memory: 1Gi
         volumeMounts:
         - name: redis-conf
           mountPath: /etc/redis
