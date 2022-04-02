@@ -30,15 +30,16 @@ while true;do
       fi
   done
   IFS=$oldIFS
+
   pod=$(kubectl -n redis-cluster get po|grep 1/1|head -n 1|awk '{print $1}')
   kubectl exec -i $pod -n redis-cluster -- sh -c "$s"
   if [ "$?" -eq "0" ]; then
       kubectl -n redis-cluster delete pod $pod
   fi
 
-  sleep 30
+  sleep 60
 
-  ok=$(kubectl exec -i redis-app-0 -n redis-cluster -- redis-cli cluster info|head -n 1|awk '{print $1}'|sed -e 's/[ \t\n\r]*//g')
+  ok=$(kubectl exec -i $pod -n redis-cluster -- redis-cli cluster info|head -n 1|awk '{print $1}'|sed -e 's/[ \t\n\r]*//g')
   if [ "$ok"x = "cluster_state:ok"x ]; then
       echo $(date)": check is ok." |tee -a $logfile
       break
