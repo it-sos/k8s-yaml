@@ -144,121 +144,121 @@ spec:
           values:
           - dd-pc
 ---
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: redis-local-xin1
-#spec:
-#  capacity:
-#    storage: 3Gi
-#  volumeMode: Filesystem
-#  accessModes:
-#  - ReadWriteOnce
-#  persistentVolumeReclaimPolicy: Retain
-#  storageClassName: redis-local-storage
-#  local:
-#    path: /var/local/k8s/redis/data1
-#  nodeAffinity:
-#    required:
-#      nodeSelectorTerms:
-#      - matchExpressions:
-#        - key: kubernetes.io/hostname
-#          operator: In
-#          values:
-#          - xin-os
-#---
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: redis-local-xin2
-#spec:
-#  capacity:
-#    storage: 3Gi
-#  volumeMode: Filesystem
-#  accessModes:
-#  - ReadWriteOnce
-#  persistentVolumeReclaimPolicy: Retain
-#  storageClassName: redis-local-storage
-#  local:
-#    path: /var/local/k8s/redis/data2
-#  nodeAffinity:
-#    required:
-#      nodeSelectorTerms:
-#      - matchExpressions:
-#        - key: kubernetes.io/hostname
-#          operator: In
-#          values:
-#          - xin-os
-#---
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: redis-local-itsos1
-#spec:
-#  capacity:
-#    storage: 3Gi
-#  volumeMode: Filesystem
-#  accessModes:
-#  - ReadWriteOnce
-#  persistentVolumeReclaimPolicy: Retain
-#  storageClassName: redis-local-storage
-#  local:
-#    path: /var/local/k8s/redis/data1
-#  nodeAffinity:
-#    required:
-#      nodeSelectorTerms:
-#      - matchExpressions:
-#        - key: kubernetes.io/hostname
-#          operator: In
-#          values:
-#          - itsos-pc
-#---
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: redis-local-itsos2
-#spec:
-#  capacity:
-#    storage: 3Gi
-#  volumeMode: Filesystem
-#  accessModes:
-#  - ReadWriteOnce
-#  persistentVolumeReclaimPolicy: Retain
-#  storageClassName: redis-local-storage
-#  local:
-#    path: /var/local/k8s/redis/data2
-#  nodeAffinity:
-#    required:
-#      nodeSelectorTerms:
-#      - matchExpressions:
-#        - key: kubernetes.io/hostname
-#          operator: In
-#          values:
-#          - itsos-pc
-#---
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: redis-local-itsos3
-#spec:
-#  capacity:
-#    storage: 3Gi
-#  volumeMode: Filesystem
-#  accessModes:
-#  - ReadWriteOnce
-#  persistentVolumeReclaimPolicy: Retain
-#  storageClassName: redis-local-storage
-#  local:
-#    path: /var/local/k8s/redis/data3
-#  nodeAffinity:
-#    required:
-#      nodeSelectorTerms:
-#      - matchExpressions:
-#        - key: kubernetes.io/hostname
-#          operator: In
-#          values:
-#          - itsos-pc
-#---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis-local-itsos1
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: redis-local-storage
+  local:
+    path: /var/local/k8s/redis/data1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - itsos-pc
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis-local-itsos2
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: redis-local-storage
+  local:
+    path: /var/local/k8s/redis/data2
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - itsos-pc
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis-local-itsos1
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: redis-local-storage
+  local:
+    path: /var/local/k8s/redis/data1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - itsos-pc
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis-local-itsos2
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: redis-local-storage
+  local:
+    path: /var/local/k8s/redis/data2
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - itsos-pc
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis-local-itsos3
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: redis-local-storage
+  local:
+    path: /var/local/k8s/redis/data3
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - itsos-pc
+---
 # 创建命名空间
 apiVersion: v1
 kind: Namespace
@@ -319,7 +319,7 @@ spec:
       app: redis 
       appCluster: redis-cluster
   serviceName: rdb # 指定无头服务的名字
-  replicas: 6 # by default is 1
+  replicas: 9 # by default is 1
   template:
     metadata:
       labels: # has to match .spec.selector.matchLabels

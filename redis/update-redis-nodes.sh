@@ -6,11 +6,11 @@ logfile=/tmp/update_redis_nodes.log
 # 一台机器是debian10.10，flannel写入mac不生效，启动后删除flannel pod重新将mac写入etcd，以恢复网络。
 echo $(date)" : reflannel start"|tee $logfile
 while true; do
-    kubectl exec -i busyboxitsos -- ping -c 1 -t 10 s88.local-service
+    kubectl exec -i busybox -- ping -c 1 -t 10 s88.local-service
     if [ "$?" -eq "0" ]; then
         break
     fi
-    echo $(date)" : busyboxitsos ping -c -t 10 s88.local-service. The network is blocked. Recheck."|tee -a $logfile
+    echo $(date)" : busyboxdd ping -c -t 10 s88.local-service. The network is blocked. Recheck."|tee -a $logfile
     sleep 30
 done
 echo $(date)" :reflannel done"|tee -a $logfile

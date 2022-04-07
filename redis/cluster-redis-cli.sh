@@ -26,8 +26,17 @@ run() {
         5)
             execfunc $1 "$2"
             ;;
+        6)
+            execfunc $1 "$2"
+            ;;
+        7)
+            execfunc $1 "$2"
+            ;;
+        8)
+            execfunc $1 "$2"
+            ;;
         *)
-            for i in 0 1 2 3 4 5; do
+            for i in 0 1 2 3 4 5 6 7 8; do
                 echo ""
                 run $i "$1"
             done
@@ -36,11 +45,11 @@ run() {
 }
 
 case $1 in
-    0|1|2|3|4|5)
+    0|1|2|3|4|5|6|7|8)
         run $1 "$(echo "$*"|cut -d " " -f1 --complement)"
         ;;
     ""|help)
-        echo "Usage $0 [0..5] command"
+        echo "Usage $0 [0..8] command"
         ;;
     *) 
         run "$*"
