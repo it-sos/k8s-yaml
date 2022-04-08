@@ -3,6 +3,11 @@
 export KUBECONFIG=/etc/kubernetes/admin.conf
 logfile=/tmp/update_redis_nodes.log
 
+kubectl get po busybox
+if [ "$?" -gt "0" ]; then
+    kubectl run busybox --image=busybox --overrides='{ "apiVersion": "v1", "spec": { "nodeSelector": {"kubernetes.io/hostname":"dd-pc"} } }' --command -- sleep 3600
+fi
+
 # 一台机器是debian10.10，flannel写入mac不生效，启动后删除flannel pod重新将mac写入etcd，以恢复网络。
 echo $(date)" : reflannel start"|tee $logfile
 while true; do
@@ -25,11 +30,16 @@ while true;do
       sleep 60
       continue
   done
+  echo "world"
   
   j=""
-  for i in 0 1 2 3 4 5; do
-      j=$(kubectl exec -i redis-app-$i -n redis-cluster -- redis-cli cluster nodes|grep myself|awk '{print $1" "$2}')"|"$j
+  for i in 0 1 2 3 4 5 6 7 8; do
+      kubectl exec -i redis-app-$i -n redis-cluster -- ls > /dev/null 2>&1
+      if [ "$?" -eq "0" ]; then
+          j=$(kubectl exec -i redis-app-$i -n redis-cluster -- redis-cli cluster nodes|grep myself|awk '{print $1" "$2}')"|"$j
+      fi
   done
+  echo "hello"
   
   oldIFS=$IFS
   IFS="|"
@@ -42,7 +52,8 @@ while true;do
   done
   IFS=$oldIFS
 
-  pod=$(kubectl -n redis-cluster get po|grep 1/1|head -n 1|awk '{print $1}')
+  pod=$(kubectl -n redis-cluster get po|grep Running|head -n 1|awk '{print $1}')
+  echo $pod
   kubectl exec -i $pod -n redis-cluster -- sh -c "$s"
   if [ "$?" -eq "0" ]; then
       kubectl -n redis-cluster delete pod $pod
