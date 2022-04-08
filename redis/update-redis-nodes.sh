@@ -30,7 +30,6 @@ while true;do
       sleep 60
       continue
   done
-  echo "world"
   
   j=""
   for i in 0 1 2 3 4 5 6 7 8; do
@@ -39,7 +38,6 @@ while true;do
           j=$(kubectl exec -i redis-app-$i -n redis-cluster -- redis-cli cluster nodes|grep myself|awk '{print $1" "$2}')"|"$j
       fi
   done
-  echo "hello"
   
   oldIFS=$IFS
   IFS="|"
