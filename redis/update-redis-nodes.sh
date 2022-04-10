@@ -12,14 +12,21 @@ fi
 overrides=$(echo '{"apiVersion":"v1","spec":{"nodeSelector":{"kubernetes.io/hostname":"demo-pc"}}}'|sed "s#demo#${name}#")
 
 export KUBECONFIG=/home/$name/.kube/config
-kubectl get po busybox$name
-if [ "$?" -gt "0" ]; then
-    kubectl run busybox$name --image=busybox --overrides=$overrides --command -- sleep 3600
-fi
 logfile=/tmp/update_redis_nodes.log
 
-# 一台机器是debian10.10，flannel写入mac不生效，启动后删除flannel pod重新将mac写入etcd，以恢复网络。
-echo $(date)" : reflannel start"|tee $logfile
+while true; do
+    echo $(date)" : create busybox$name"|tee $logfile
+    kubectl get po busybox$name
+    if [ "$?" -gt "0" ]; then
+        eval "kubectl run busybox$name --image=busybox --overrides='$overrides' --command -- sleep 3600"
+        sleep 30
+    else
+    	echo $(date)" : create busybox$name node completed"|tee $logfile
+        break
+    fi
+done
+
+echo $(date)" : wait first master node network"|tee $logfile
 while true; do
     kubectl exec -i busybox$name -- ping -c 1 -t 10 s98.local-service
     if [ "$?" -eq "0" ]; then
@@ -28,7 +35,7 @@ while true; do
     echo $(date)" : busybox$name ping -c -t 10 s98.local-service. The network is blocked. Recheck."|tee -a $logfile
     sleep 30
 done
-echo $(date)" :reflannel done"|tee -a $logfile
+echo $(date)" : wait first master node network completed"|tee $logfile
 
 echo $(date)': reconnect redis cluster.'|tee -a $logfile
 while true;do
