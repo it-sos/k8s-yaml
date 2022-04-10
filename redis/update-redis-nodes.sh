@@ -3,9 +3,13 @@
 export KUBECONFIG=/etc/kubernetes/admin.conf
 logfile=/tmp/update_redis_nodes.log
 
-kubectl get po busybox
+kubectl get po busyboxdd
 if [ "$?" -gt "0" ]; then
-    kubectl run busybox --image=busybox --overrides='{ "apiVersion": "v1", "spec": { "nodeSelector": {"kubernetes.io/hostname":"dd-pc"} } }' --command -- sleep 3600
+   kubectl run busyboxdd --image=busybox --overrides='{ "apiVersion": "v1", "spec": { "nodeSelector": {"kubernetes.io/hostname":"dd-pc"} } }' --command -- sleep 3600
+fi
+
+node=$(hostname)
+if [ "$node" = "feiyu-pc" ];then
 fi
 
 # 一台机器是debian10.10，flannel写入mac不生效，启动后删除flannel pod重新将mac写入etcd，以恢复网络。

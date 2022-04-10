@@ -1,0 +1,11 @@
+[Unit]
+Description=开机启动k8s集群相关脚本
+Documentation=开机k8s集群相关脚本
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=-/bin/sh {script}
+
+[Install]
+WantedBy=default.target
