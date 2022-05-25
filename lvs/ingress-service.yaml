@@ -2,8 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-wildcard-host
+  namespace: default
   annotations:
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-body-size: 4096M
+    nginx.org/client-max-body-size: 4096M
+
     #nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
@@ -37,3 +41,34 @@ spec:
                 name: blog-backend
                 port:
                   number: 8090
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test
+  namespace: local-service
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    #nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: "t.qjfu.cn"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: s88
+                port:
+                  number: 8090
+    - host: "t.feiyu.wiki"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: s88
+                port:
+                  number: 1026

@@ -26,6 +26,14 @@ spec:
       port: 9000
       targetPort: 9000
     - protocol: TCP
+      name: robot
+      port: 8090
+      targetPort: 8090
+    - protocol: TCP
+      name: robot-wiki
+      port: 1026
+      targetPort: 1026
+    - protocol: TCP
       name: redis1
       port: 7001
       targetPort: 7001
@@ -63,6 +71,10 @@ subsets:
         name: mysql
       - port: 9200
         name: es
+      - port: 8090
+        name: robot
+      - port: 1026
+        name: robot-wiki
       - port: 9000
         name: minio
       - port: 7001
