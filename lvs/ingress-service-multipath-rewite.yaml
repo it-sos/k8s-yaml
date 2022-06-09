@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-http
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 4096M
+    nginx.org/client-max-body-size: 4096M
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "itsos.ltd"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api
+            backend:
+              service:
+                name: blog-backend
+                port:
+                  number: 8090
+  defaultBackend:
+    service:
+      name: blog-frontend
+      port:
+        number: 80
