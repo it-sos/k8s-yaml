@@ -1,0 +1,156 @@
+# 创建pv
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: redis-local-alone-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis-local-alone
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: redis-local-alone-storage
+  local:
+    path: /Users/yupeng/data/redis/alone
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - docker-desktop
+---
+# 创建命名空间
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: redis-alone
+   labels:
+     name: redis-alone
+---
+# 创建 configmap 配置
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: redis-alone-configmap # configmap的名字，加上下面的demo-redis就是这个configmap在k8s集群中的唯一标识
+  namespace: redis-alone
+data:
+  # 这里可以创建多个文件
+  redis.conf: |
+    appendonly yes
+    protected-mode no
+    #cluster-announce-ip ${POD_IP}
+    dir /var/lib/redis        
+    port 6379
+---
+# 创建无头服务
+apiVersion: v1
+kind: Service
+metadata:
+  name: rdb
+  namespace: redis-alone
+  labels:
+    app: redis
+spec:
+  ports:
+  - name: redis-port
+    port: 6379
+  clusterIP: None
+  selector:
+    app: redis
+    appCluster: redis-alone
+---
+# 创建statefulset
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-app
+  namespace: redis-alone
+spec:
+  selector:
+    matchLabels: # has to match .spec.template.metadata.labels
+      app: redis 
+      appCluster: redis-alone
+  serviceName: rdb # 指定无头服务的名字
+  replicas: 6 # by default is 1
+  template:
+    metadata:
+      labels: # has to match .spec.selector.matchLabels
+        app: redis 
+        appCluster: redis-alone
+    spec:
+      terminationGracePeriodSeconds: 20
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - redis
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: redis
+        image: docker.io/library/redis:6.2.6
+          #image: docker.io/redislabs/redisearch:latest
+        command:
+          ["/bin/sh", "redis-server", "/etc/redis/redis.conf"]
+          #["/bin/sh", "redis-server", "/etc/redis/redis.conf", "--loadmodule", "/usr/lib/redis/modules/redisearch.so", "--loadmodule", "/usr/lib/redis/modules/rejson.so"]
+        #  - "redis-server"
+        #args:
+        #  - "/etc/redis/redis.conf"
+        #  - "--protected-mode"
+        #  - "no"
+        #  - "--cluster-announce-ip"
+        #  - "$(POD_IP)"
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: TZ
+          value: Asia/Shanghai
+        ports:
+        - containerPort: 6379
+          name: redis
+          protocol: "TCP"
+        resources:
+          requests:                         # 每个pod请求的资源
+            cpu: 100m
+            memory: 100Mi
+          limits:                           # 资源限制
+            cpu: 500m
+            memory: 500Mi
+        volumeMounts:
+        - name: redis-conf
+          mountPath: /etc/redis
+        - name: redis-data
+          mountPath: /var/lib/redis
+      volumes:
+        - name: redis-conf                  # 指定名为redis-conf的volumes
+          configMap:
+            name: redis-alone-configmap   # 引用之前创建的configMap卷
+            items: # 来自 ConfigMap 的一组键，将被创建为文件
+              - key: redis.conf 
+                path: redis.conf
+  volumeClaimTemplates: # 将通过 PersistentVolumes 驱动提供的 pv 动态申领一个符合条件的存储卷并自动绑定生成pvc卷
+  - metadata:
+      name: redis-data # pvc创建一个volumes叫做redis-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "redis-local-alone-storage"
+      resources:
+        requests:
+          storage: 1Gi
